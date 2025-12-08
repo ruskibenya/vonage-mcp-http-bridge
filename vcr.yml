@@ -1,0 +1,41 @@
+project:
+  name: vonage-mcp-bridge
+
+instance:
+  name: dev
+  runtime: nodejs22
+  region: aws.use1
+  application-id: ENTER_APPLICATION_ID_HERE
+  entrypoint: [node, src/index.js]
+  # you can drop build-script or make it a no-op if you don't need a build
+  # build-script: "./build.sh"
+  capabilities:
+    - voice
+    - messages-v1
+  environment:
+    # MCP bridge config
+    - name: MCP_CHILD_COMMAND
+      value: "npx"
+    - name: MCP_CHILD_ARGS
+      value: "-y,@vonage/vonage-mcp-server-api-bindings"
+
+    # Auth for n8n / other MCP clients
+    - name: MCP_AUTH_TOKEN
+      value: "CHANGE_ME"
+
+    # Vonage creds for the tooling server
+    - name: VONAGE_API_KEY
+      secret: VONAGE_API_KEY       # provided via VCR secret
+    - name: VONAGE_API_SECRET
+      secret: VONAGE_API_SECRET    # provided via VCR secret
+    - name: VONAGE_APPLICATION_ID
+      value: "YOUR_APP_ID_HERE"
+    - name: VONAGE_PRIVATE_KEY64
+      secret: VONAGE_PRIVATE_KEY64 # base64 of your private key
+    - name: VONAGE_VIRTUAL_NUMBER
+      value: "+1234567890"         # number used for SMS/voice
+
+  secrets:
+    - VONAGE_API_KEY
+    - VONAGE_API_SECRET
+    - VONAGE_PRIVATE_KEY64

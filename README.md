@@ -1,6 +1,6 @@
-# Vonage MCP HTTP Bridge for n8n
+# Vonage MCP HTTP Bridge
 
-A minimal HTTP → stdio bridge that exposes the [Vonage MCP tooling server](https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings) over HTTP JSON‑RPC so you can use it as a Tool Provider in n8n’s AI Agent.
+A minimal HTTP → stdio bridge that exposes the [Vonage MCP tooling server](https://www.npmjs.com/package/@vonage/vonage-mcp-server-api-bindings) over HTTP JSON‑RPC so you can use it as a Tool Provider in any AI Agent.
 
 - Runs as a simple Node.js web service.
 - Starts the Vonage MCP server via stdio.
@@ -12,6 +12,23 @@ A minimal HTTP → stdio bridge that exposes the [Vonage MCP tooling server](htt
 - Secured via a bearer auth token (`MCP_AUTH_TOKEN`).
 
 ---
+
+
+Deploy this Bridge in one click using the following Render Blueprint
+
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ruskibenya/vonage-mcp-http-bridge)
+
+
+Under "Review render.yaml configurations", select Create all as new services. Then you will need to fill in your env variables. Create a unique MCP_AUTH_TOKEN (this will be used in the MCP Client to authenticate), use a [strong password](https://namecruncher.com/password-generator) or stronger.
+
+
+The MCP Bridge endpoint is:
+
+```text
+https://vonage-mcp-http-bridge.onrender.com/mcp
+```
+
 
 ## Architecture
 
@@ -136,87 +153,8 @@ services:
         sync: false
 ```
 
-Then add this button to the README:
 
-```markdown
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ruskibenya/vonage-mcp-http-bridge)
-```
 
-Users click the button, fill in env vars, and Render will:
-
-```text
-https://vonage-mcp-http-bridge.onrender.com
-```
-
-The MCP endpoint is:
-
-```text
-https://vonage-mcp-http-bridge.onrender.com/mcp
-```
-
-### Option 2: Manual Render setup
-
-1. In Render, create a **Web Service** from this GitHub repo.  
-2. Settings:
-   - Environment: `Node`  
-   - Build command: `npm install`  
-   - Start command: `npm start`
-3. Add all env vars listed above.  
-4. Deploy and watch logs for:
-   - `Connected to Vonage MCP tooling server via stdio`
-   - `HTTP MCP bridge listening on <port>`
-
-Test with curl:
-
-```bash
-curl -s -X POST "https://<your-render-app>.onrender.com/mcp" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <MCP_AUTH_TOKEN>" \
-  --data-binary '{"jsonrpc":"2.0","id":"1","method":"tools/list","params":{}}'
-```
-
----
-
-## Connecting from n8n
-
-### 1. Enable MCP access
-
-In n8n:
-
-- Go to **Settings → MCP Access**.  
-- Turn **Enable MCP** on.  
-- If there’s an allow‑list, ensure your Render URL is allowed:
-
-```text
-https://vonage-mcp-http-bridge.onrender.com
-```
-
-### 2. Configure MCP Client node
-
-Add an **MCP Client** node:
-
-```text
-Server Transport: HTTP Streamable (or HTTP)
-MCP Endpoint URL: https://vonage-mcp-http-bridge.onrender.com/mcp
-Authentication:   Bearer Auth
-Token:            <MCP_AUTH_TOKEN>
-```
-
-For a quick test:
-
-```text
-Tool:      By ID → balance
-Input Mode: Manual
-```
-
-Execute the node; you should see your Vonage balance data.
-
-Once that works:
-
-- Switch **Tool** to `From list` and pick tools from the dropdown.  
-- Connect the MCP Client node as a tool into an **Agent** node (Tools Agent V3).
-
----
 
 ## Notes / Gotchas
 

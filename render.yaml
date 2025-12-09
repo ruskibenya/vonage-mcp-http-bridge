@@ -2,7 +2,6 @@ services:
   - type: web
     name: vonage-mcp-http-bridge
     env: node
-    region: oregon   # or preferred region
     plan: free
     buildCommand: "npm install"
     startCommand: "npm start"

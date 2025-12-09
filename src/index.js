@@ -9,12 +9,8 @@ app.use(express.json());
 let clientPromise = null;
 
 async function createMcpClient() {
-  const command = process.env.MCP_CHILD_COMMAND || 'npx';
-  const rawArgs = process.env.MCP_CHILD_ARGS || '-y,@vonage/vonage-mcp-server-api-bindings';
-  const args = rawArgs
-    .split(',')
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0);
+  const command = 'node_modules/.bin/vonage-mcp-server-api-bindings';
+  const args = [];
 
   const transport = new StdioClientTransport({
     command,

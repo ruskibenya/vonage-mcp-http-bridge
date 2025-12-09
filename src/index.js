@@ -85,6 +85,22 @@ app.post('/mcp', async (req, res) => {
       return;
     }
 
+    if (method === 'initialize') {
+      res.json({
+        jsonrpc: '2.0',
+        id,
+        result: {
+          protocolVersion: params?.protocolVersion || '2025-06-18',
+          capabilities: { tools: {} },
+          serverInfo: {
+            name: 'vonage-mcp-http-bridge',
+            version: '0.1.0',
+          },
+        },
+      });
+      return;
+    }
+
     if (method === 'tools/list') {
       const toolsResponse = await client.listTools();
       res.json({

@@ -66,8 +66,8 @@ Vonage:
 - `VONAGE_API_SECRET`
 - `VONAGE_APPLICATION_ID`
 - `VONAGE_PRIVATE_KEY64` – base64‑encoded contents of your private key `.key` file.
-- `VONAGE_VIRTUAL_NUMBER` – SMS number in E.164 format, e.g. `+12025550123`.
-- `VONAGE_WHATSAPP_NUMBER` – WhatsApp‑enabled number in E.164.
+- `VONAGE_VIRTUAL_NUMBER` – SMS number, e.g. `12025550123`.
+- `VONAGE_WHATSAPP_NUMBER` – WhatsApp‑enabled number.
 
 The HTTP server listens on `PORT` (injected by Render or your platform) or defaults to `3000` locally.
 
